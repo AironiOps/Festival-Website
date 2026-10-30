@@ -1,0 +1,327 @@
+@import "tailwindcss";
+@import "@fontsource-variable/bodoni-moda/wght.css";
+@import "@fontsource-variable/bodoni-moda/wght-italic.css";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+/* Korean (SIL Open Font License). Split by unicode-range, so English pages download none of it
+   and Korean pages download only the glyph sets they use. */
+@import "@fontsource/noto-sans-kr/400.css";
+@import "@fontsource/noto-sans-kr/500.css";
+@import "@fontsource/noto-serif-kr/500.css";
+
+/*
+  Layout concept: a projection room. Pages read like a reel —
+  letterboxed 2.39:1 frames, slate labels and timecode set in mono,
+  long editorial columns in between.
+
+  Every colour and face is a token below. Swap these when the official
+  brand arrives; components only reference tokens.
+*/
+:root {
+  --ink: #0c0e15;          /* booth dark, slight blue */
+  --ink-raised: #141721;   /* panels */
+  --ink-line: #262a38;     /* hairlines */
+  --paper: #ebe7df;        /* primary text, warm projector white */
+  --muted: #979baa;        /* secondary text */
+  --celadon: #8cc4b1;      /* accent: Goryeo celadon glaze */
+  --celadon-deep: #2f5d52;
+  --cinnabar: #d65a3f;     /* signal only: REC dot, pending marker */
+
+  --font-display: "Bodoni Moda Variable", "Bodoni 72", "Didot", Georgia, serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --gutter: max(20px, env(safe-area-inset-left, 0px));
+  --measure: 66ch;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-raised: var(--ink-raised);
+  --color-ink-line: var(--ink-line);
+  --color-paper: var(--paper);
+  --color-muted: var(--muted);
+  --color-celadon: var(--celadon);
+  --color-celadon-deep: var(--celadon-deep);
+  --color-cinnabar: var(--cinnabar);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+html {
+  background: var(--ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+::selection {
+  background: var(--celadon);
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--celadon);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+
+.prose-col {
+  max-width: var(--measure);
+}
+
+/* Slate label: small mono caps used for eyebrows and metadata. */
+.slate {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
+}
+
+/* Korean pages: Latin keeps the festival faces; Hangul falls back to Noto.
+   No fake italics on Hangul, word-level line breaks, calmer tracking and leading. */
+[lang="ko"] {
+  --font-display: "Bodoni Moda Variable", "Noto Serif KR", "Apple SD Gothic Neo", serif;
+  --font-body: "IBM Plex Sans", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "Noto Sans KR", ui-monospace, monospace;
+  font-family: var(--font-body);
+  font-synthesis-style: none;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-break: strict;
+}
+[lang="ko"] .slate {
+  letter-spacing: 0.06em;
+  word-spacing: -0.3em;
+}
+[lang="ko"] .display {
+  letter-spacing: -0.03em;
+  line-height: 1.18;
+}
+[lang="en"] .display {
+  line-height: 1.02;
+}
+
+.text-link {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--celadon) 55%, transparent);
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 160ms ease, color 160ms ease;
+}
+.text-link:hover {
+  color: var(--celadon);
+  text-decoration-color: var(--celadon);
+}
+
+/* Letterbox frame: 2.39:1, the scope ratio. */
+.scope {
+  position: relative;
+  aspect-ratio: 2.39 / 1;
+  max-width: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 140% at 18% 0%, color-mix(in oklab, var(--celadon) 22%, transparent) 0%, transparent 55%),
+    radial-gradient(90% 120% at 100% 100%, color-mix(in oklab, var(--celadon-deep) 60%, transparent) 0%, transparent 60%),
+    linear-gradient(180deg, #10131c 0%, #0a0c12 100%);
+  border-top: 1px solid var(--ink-line);
+  border-bottom: 1px solid var(--ink-line);
+}
+
+/* Hero still: fills the scope frame; 4:5 on phones. */
+.hero-frame {
+  background: var(--ink);
+}
+.hero-frame picture,
+.hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.hero-img {
+  object-fit: cover;
+  object-position: 62% 40%;
+  animation: settle 1600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes settle {
+  from { transform: scale(1.04); filter: brightness(0.6); }
+  to   { transform: none; filter: none; }
+}
+/* Darkens the lower left so the title stays readable over the image. */
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, color-mix(in oklab, var(--ink) 78%, transparent) 0%, color-mix(in oklab, var(--ink) 30%, transparent) 42%, transparent 70%),
+    linear-gradient(0deg, color-mix(in oklab, var(--ink) 85%, transparent) 0%, transparent 45%);
+}
+@media (max-width: 767px) {
+  .hero-frame { aspect-ratio: 4 / 5; }
+  .hero-img { object-position: 50% 30%; }
+  .hero-scrim {
+    background: linear-gradient(0deg, color-mix(in oklab, var(--ink) 92%, transparent) 0%, color-mix(in oklab, var(--ink) 40%, transparent) 38%, transparent 60%);
+  }
+}
+
+/* Projector beam sweeping across the frame. */
+.beam {
+  position: absolute;
+  inset: -40% -10%;
+  background: conic-gradient(from 200deg at 0% 50%, transparent 0deg, color-mix(in oklab, var(--paper) 10%, transparent) 12deg, transparent 26deg);
+  mix-blend-mode: screen;
+  animation: beam 14s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes beam {
+  from { transform: rotate(-4deg); }
+  to   { transform: rotate(5deg); }
+}
+
+/* Film grain from an inline SVG noise tile. */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.rec-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--cinnabar);
+  animation: blink 1.6s steps(2, jump-none) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0.25; }
+}
+
+/* Pending content marker. */
+.pending {
+  border: 1px dashed color-mix(in oklab, var(--cinnabar) 70%, transparent);
+  background: color-mix(in oklab, var(--cinnabar) 7%, transparent);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.btn-primary {
+  background: var(--paper);
+  color: var(--ink);
+}
+.btn-primary:hover {
+  background: var(--celadon);
+}
+.btn-ghost {
+  border-color: var(--ink-line);
+  color: var(--paper);
+}
+.btn-ghost:hover {
+  border-color: var(--celadon);
+  color: var(--celadon);
+}
+
+/* Header backdrop */
+.site-header {
+  background: color-mix(in oklab, var(--ink) 86%, transparent);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+}
+
+/* Native <details> accordion */
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details .chev {
+  transition: transform 200ms ease;
+}
+details[open] .chev {
+  transform: rotate(45deg);
+}
+
+/* Fillout container: keep the third-party iframe full width. */
+.fillout-host iframe {
+  width: 100% !important;
+  border: 0;
+}
+
+/* Rise-in from a visible resting state. */
+.rise {
+  animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.rise-2 { animation-delay: 120ms; }
+.rise-3 { animation-delay: 240ms; }
+@keyframes rise {
+  from { transform: translateY(10px); opacity: 0.001; }
+  to   { transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
