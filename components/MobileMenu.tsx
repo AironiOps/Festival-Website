@@ -73,7 +73,12 @@ export function MobileMenu({
               {item.label}
             </Link>
           ))}
-          <Link href={submit.href} className="btn btn-primary mt-8 justify-center">
+          <Link
+            href={`${submit.href}#form`}
+            data-open-entry-form=""
+            onClick={() => setOpenOn(null)}
+            className="btn btn-primary mt-8 justify-center"
+          >
             {submit.label}
           </Link>
         </nav>

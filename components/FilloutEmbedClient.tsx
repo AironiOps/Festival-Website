@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FilloutSliderEmbed } from "@fillout/react";
 
 /**
@@ -20,6 +20,31 @@ export default function FilloutEmbedClient({
   parameters?: Record<string, string>;
 }) {
   const [open, setOpen] = useState(false);
+
+  // The header and menu "Submit" buttons link to /submit/#form. Arriving from
+  // another page with #form opens the form; clicking them while already on
+  // this page opens it in place instead of doing nothing.
+  useEffect(() => {
+    const clearHash = () => history.replaceState(null, "", location.pathname + location.search);
+    let arrival: ReturnType<typeof setTimeout> | undefined;
+    if (location.hash === "#form") {
+      clearHash();
+      arrival = setTimeout(() => setOpen(true), 0);
+    }
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const link = (e.target as Element | null)?.closest?.("a[data-open-entry-form]");
+      if (!link) return;
+      e.preventDefault();
+      setOpen(true);
+    };
+    document.addEventListener("click", onClick, true);
+    return () => {
+      clearTimeout(arrival);
+      document.removeEventListener("click", onClick, true);
+    };
+  }, []);
+
   return (
     <>
       <button type="button" className="btn btn-primary" onClick={() => setOpen(true)} aria-haspopup="dialog">

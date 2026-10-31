@@ -21,7 +21,11 @@ export function Header({ locale }: { locale: Locale }) {
             ))}
           </nav>
           <LanguageSwitch label={ui.chrome.language} />
-          <Link href={localePath(locale, "/submit/")} className="btn btn-primary !min-h-0 !py-2.5">
+          <Link
+            href={`${localePath(locale, "/submit/")}#form`}
+            data-open-entry-form=""
+            className="btn btn-primary !min-h-0 !py-2.5"
+          >
             {ui.chrome.submitShort}
           </Link>
         </div>
